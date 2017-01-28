@@ -1,10 +1,10 @@
 # `bit::cmake`
 
-[![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bitwizeshift/Lazy/master/LICENSE.md)
+[![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bitwizeshift/bit-stl/master/LICENSE.md)
 
 ## What is `bit::cmake`?
 
-This is a small repo that contains some cmake build modules and toolchains to facilitate easier script writing. 
+This is a small repo that contains some cmake build modules and toolchains to facilitate easier script writing.
 These are used in various personal projects to promote writing c++ that follows proper coding standards
 
 ## Modules
