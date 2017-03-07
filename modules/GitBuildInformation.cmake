@@ -27,9 +27,9 @@ include(CMakeParseArguments)
 macro(git_build_information )
 
   set(__single_args MINOR_VARIABLE PATCH_VARIABLE BUILD_VARIABLE BRANCH_VARIABLE HASH)
-  cmake_parse_arguments("GIT" "" "${__single_args}" "${ARGN}")
+  cmake_parse_arguments("GIT" "" "${__single_args}" "" "${ARGN}")
 
-  if( NOT "${GIT_HASH}" )
+  if( NOT GIT_HASH )
     message(FATAL_ERROR "git_build_information: HASH not specified")
   endif()
 
@@ -39,7 +39,9 @@ macro(git_build_information )
 
   if( GIT_EXECUTABLE_PATH )
 
-    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --merges --count ${GIT_HEAD}..HEAD
+    ############################## MINOR VERSION #############################
+
+    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --merges --count ${GIT_HASH}..HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_MINOR_VARIABLE}"
                     ERROR_VARIABLE "${_error}")
@@ -48,18 +50,40 @@ macro(git_build_information )
       message(FATAL_ERROR "git_build_information: Error retrieving minor revision. ${_error}")
     endif()
 
+    string(STRIP "${${GIT_MINOR_VARIABLE}}" "${GIT_MINOR_VARIABLE}")
+
+    ############################## MAJOR VERSION #############################
+
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count ${GIT_HASH}..HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_PATCH_VARIABLE}"
                     ERROR_VARIABLE "${_error}")
 
+    string(STRIP "${${GIT_PATCH_VARIABLE}}" "${GIT_PATCH_VARIABLE}")
+
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving patch revision. ${_error}")
     endif()
 
+    ############################## PATCH VERSION #############################
+
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_BUILD_VARIABLE}")
+
+    string(STRIP "${${GIT_BUILD_VARIABLE}}" "${GIT_BUILD_VARIABLE}")
+
+    if( _error )
+      message(FATAL_ERROR "git_build_information: Error retrieving build number. ${_error}")
+    endif()
+
+    ############################## BRANCH NAME ###############################
+
+    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-parse --abbrev-ref HEAD
+                    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                    OUTPUT_VARIABLE "${GIT_BRANCH_VARIABLE}")
+
+    string(STRIP "${${GIT_BRANCH_VARIABLE}}" "${GIT_BRANCH_VARIABLE}")
 
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving build number. ${_error}")

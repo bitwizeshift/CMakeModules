@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6.3)
+cmake_minimum_required(VERSION 3.1.3)
 
 include(CMakeParseArguments)
 
@@ -110,15 +110,15 @@ macro(make_version_header output_path )
 
   endif()
   if( size EQUAL 14 )
-    list(GET args 12 suffix)
-    list(GET args 13 VERSION_SUFFIX)
-
-    if( NOT VERSION_SUFFIX STREQUAL "" )
-      message(FATAL_ERROR "make_version_header: SUFFIX specified twice.")
+    if( NOT TAG_VERSION STREQUAL "" )
+      message(FATAL_ERROR "make_version_header: TAG specified twice.")
     endif()
 
-    if( NOT suffix STREQUAL "SUFFIX" )
-      message(FATAL_ERROR "make_version_header: Incorrect positional argument 12. Expected 'SUFFIX', received '${suffix}'")
+    list(GET args 12 tag)
+    list(GET args 13 TAG_VERSION)
+
+    if( NOT tag STREQUAL "TAG" )
+      message(FATAL_ERROR "make_version_header: Incorrect positional argument 12. Expected 'TAG', received '${tag}'")
     endif()
   endif()
 
