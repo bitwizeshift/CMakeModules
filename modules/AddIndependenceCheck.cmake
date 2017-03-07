@@ -54,7 +54,6 @@ function(add_independence_check target arg1)
     set_property( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${fullpath}")
 
     list(APPEND source_files "${output_path}")
-    break()
 
   endforeach()
 
