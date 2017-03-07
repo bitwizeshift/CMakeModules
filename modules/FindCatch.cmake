@@ -18,7 +18,7 @@ find_path(
 	DOC "Catch unit-test include directory"
 )
 
-set(CATCH_INCLUDE_DIRS ${CATCH_INCLUDE_DIR})
+set(CATCH_INCLUDE_DIRS ${CATCH_INCLUDE_DIR} CACHE FILEPATH "Include directory for the CATCH unit test")
 
 # Create a custom Catch target if not already defined
 if( NOT TARGET philsquared::Catch AND CATCH_INCLUDE_DIRS )
@@ -33,4 +33,4 @@ endif()
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(catch DEFAULT_MSG
 	CATCH_INCLUDE_DIR)
-mark_as_advanced(CATCH_INCLUDE_DIR)
+mark_as_advanced(CATCH_INCLUDE_DIRS)
