@@ -8,13 +8,13 @@ include(CMakeParseArguments)
 #
 # Copies a list of properties from a given target to another target
 #
-# Syntax:
+# ::
 #
-# copy_target_properties( <target> <from-target> PROPERTIES [properties]... )
+#     copy_target_properties( <target> <from-target> PROPERTIES [properties]... )
 #
-# <target>        : The target to copy properties to
-# <from-target    : The target to copy properties from
-# [properties]... : List of properties to copy
+#     <target>        - The target to copy properties to
+#     <from-target    - The target to copy properties from
+#     [properties]... - List of properties to copy
 #
 macro(copy_target_properties to_target from_target)
 

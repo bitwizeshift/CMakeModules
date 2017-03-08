@@ -8,13 +8,13 @@ include("${CMAKE_CURRENT_LIST_DIR}/CopyTargetProperties.cmake")
 #
 # Copies a list of properties from a given target to another target
 #
-# Syntax:
+# ::
 #
-# copy_target( <target> <from-target> <visibility> )
+#     copy_target( <target> <from-target> <visibility> )
 #
-# <target>        : The target to copy properties to
-# <from-target>   : The target to copy properties from
-# <visibility>    : The visibility
+#     <target>      - The target to copy properties to
+#     <from-target> - The target to copy properties from
+#     <visibility>  - The visibility
 #
 macro(copy_target to_target from_target visibility)
 

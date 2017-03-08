@@ -7,16 +7,13 @@ cmake_minimum_required(VERSION 2.8.8)
 # Creates a C or C++ library that includes each specified header file
 # independently to ensure that each header carries no expected ordering
 #
-# Syntax:
+# ::
 #
-# add_independence_check( <target> [C|CXX] [headers]... )
+#     add_independence_check( <target> [C|CXX] [headers]... )
 #
-# <target>      : The name of the target to create
-# [headers]...  : List of headers to compile
-# [directories] : List of include directories that the headers exist in
-#
-# In order for the conformance check to compile, the include directories in
-# which the headers exist in must be specified.
+#     <target>      - The name of the target to create
+#     [C|CXX]       - The language check. By default, this is CXX
+#     [headers]...  - List of headers to compile
 #
 function(add_independence_check target arg1)
 
