@@ -32,17 +32,17 @@ include(CMakeParseArguments)
 macro(make_version_header output_path )
 
   set(__single_args MAJOR MINOR PATCH BUILD PREFIX SUFFIX TAG)
-  cmake_parse_arguments("GIT" "" "${__single_args}" "" "${ARGN}")
+  cmake_parse_arguments("VERSION" "" "${__single_args}" "" "${ARGN}")
 
   ############################ Default Arguments #############################
 
-  set(MAJOR_VERSION  ${GIT_MAJOR})
-  set(MINOR_VERSION  ${GIT_MINOR})
-  set(PATCH_VERSION  ${GIT_PATCH})
-  set(BUILD_NUMBER   ${GIT_BUILD})
-  set(PREFIX         "${GIT_PREFIX}")
-  set(TAG_VERSION    "${GIT_TAG")
-  set(VERSION_SUFFIX "${GIT_SUFFIX}")
+  set(MAJOR_VERSION  ${VERSION_MAJOR})
+  set(MINOR_VERSION  ${VERSION_MINOR})
+  set(PATCH_VERSION  ${VERSION_PATCH})
+  set(BUILD_NUMBER   ${VERSION_BUILD})
+  set(PREFIX         "${VERSION_PREFIX}")
+  set(TAG_VERSION    "${VERSION_TAG}")
+  set(VERSION_SUFFIX "${VERSION_SUFFIX}")
   set(VERSION_STRING "")
   set(FULL_VERSION_STRING "")
 
