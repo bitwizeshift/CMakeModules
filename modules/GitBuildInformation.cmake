@@ -44,7 +44,9 @@ macro(git_build_information )
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --merges --count ${GIT_HASH}..HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_MINOR_VARIABLE}"
-                    ERROR_VARIABLE "${_error}")
+                    ERROR_VARIABLE "${_error}"
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    ERROR_STRIP_TRAILING_WHITESPACE )
 
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving minor revision. ${_error}")
@@ -57,9 +59,9 @@ macro(git_build_information )
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count ${GIT_HASH}..HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_PATCH_VARIABLE}"
-                    ERROR_VARIABLE "${_error}")
-
-    string(STRIP "${${GIT_PATCH_VARIABLE}}" "${GIT_PATCH_VARIABLE}")
+                    ERROR_VARIABLE "${_error}"
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    ERROR_STRIP_TRAILING_WHITESPACE )
 
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving patch revision. ${_error}")
@@ -69,9 +71,10 @@ macro(git_build_information )
 
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                    OUTPUT_VARIABLE "${GIT_BUILD_VARIABLE}")
-
-    string(STRIP "${${GIT_BUILD_VARIABLE}}" "${GIT_BUILD_VARIABLE}")
+                    OUTPUT_VARIABLE "${GIT_BUILD_VARIABLE}"
+                    ERROR_VARIABLE "${_error}"
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    ERROR_STRIP_TRAILING_WHITESPACE )
 
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving build number. ${_error}")
@@ -81,9 +84,11 @@ macro(git_build_information )
 
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-parse --abbrev-ref HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                    OUTPUT_VARIABLE "${GIT_BRANCH_VARIABLE}")
+                    OUTPUT_VARIABLE "${GIT_BRANCH_VARIABLE}"
+                    ERROR_VARIABLE "${_error}"
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    ERROR_STRIP_TRAILING_WHITESPACE )
 
-    string(STRIP "${${GIT_BRANCH_VARIABLE}}" "${GIT_BRANCH_VARIABLE}")
 
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving build number. ${_error}")
