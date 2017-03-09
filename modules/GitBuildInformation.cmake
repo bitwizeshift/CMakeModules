@@ -54,20 +54,33 @@ macro(git_build_information )
 
     string(STRIP "${${GIT_MINOR_VARIABLE}}" "${GIT_MINOR_VARIABLE}")
 
-    ############################## MAJOR VERSION #############################
+    ############################## PATCH VERSION #############################
 
-    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count ${GIT_HASH}..HEAD
+    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --min-parents=2 --max-count=1 ${GIT_HASH}..HEAD
+                    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                    OUTPUT_VARIABLE _recent_merge_commit
+                    ERROR_VARIABLE "${_error}"
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    ERROR_STRIP_TRAILING_WHITESPACE )
+
+    if( "${_recent_merge_commit}" STREQUAL "" )
+      set(_recent_merge_commit ${GIT_HASH})
+    endif()
+
+    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count ${_recent_merge_commit}..HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_PATCH_VARIABLE}"
                     ERROR_VARIABLE "${_error}"
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     ERROR_STRIP_TRAILING_WHITESPACE )
 
+    set(_recent_merge_commit)
+
     if( _error )
       message(FATAL_ERROR "git_build_information: Error retrieving patch revision. ${_error}")
     endif()
 
-    ############################## PATCH VERSION #############################
+    ############################## BUILD VERSION #############################
 
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
