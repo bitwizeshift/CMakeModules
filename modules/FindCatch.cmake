@@ -21,7 +21,7 @@ find_path(
 set(Catch_INCLUDE_DIRS ${Catch_INCLUDE_DIR} CACHE FILEPATH "Include directory for the CATCH unit test")
 
 # Create a custom Catch target if not already defined
-if( NOT TARGET philsquared::Catch AND CATCH_INCLUDE_DIRS )
+if( NOT TARGET philsquared::Catch AND Catch_INCLUDE_DIRS )
 
   add_library(philsquared::Catch INTERFACE IMPORTED)
   set_target_properties(philsquared::Catch PROPERTIES
