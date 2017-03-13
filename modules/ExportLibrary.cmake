@@ -87,7 +87,7 @@ function(export_library)
                 ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake.in
           DESTINATION "${prefix}lib" )
 
-  install( TARGETS "stl"
+  install( TARGETS "${EXPORT_TARGETS}"
           EXPORT "${PACKAGE_NAME}Targets"
           LIBRARY DESTINATION "${prefix}lib"
           ARCHIVE DESTINATION "${prefix}lib"
