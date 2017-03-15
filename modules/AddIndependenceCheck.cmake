@@ -37,8 +37,9 @@ function(add_independence_check target arg1)
   set(source_files)
   foreach( header ${headers} )
 
+    get_filename_component(path_segment "${header}" PATH)
     get_filename_component(absolute_header "${header}" ABSOLUTE)
-    file(RELATIVE_PATH relative_header "${output_dir}" "${absolute_header}")
+    file(RELATIVE_PATH relative_header "${output_dir}/${path_segment}" "${absolute_header}")
 
     set(output_path "${output_dir}/${header}.${extension}")
 
