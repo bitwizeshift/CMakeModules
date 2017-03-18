@@ -56,22 +56,22 @@ function(export_library)
   set(PACKAGE_VERSION_MINOR "${EXPORT_MINOR_VERSION}")
   set(PACKAGE_VERSION       "${EXPORT_VERSION}")
 
-  configure_file("${_ExportLibrary_DIR}/templates/PackageConfig.cmake.in"
-                "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake.in"
-                @ONLY)
+  configure_file( "${_ExportLibrary_DIR}/templates/PackageConfig.cmake.in"
+                  "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake"
+                  @ONLY )
 
-  configure_file("${_ExportLibrary_DIR}/templates/PackageConfigVersion.cmake.in"
-                "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}ConfigVersion.cmake"
-                @ONLY)
+  configure_file( "${_ExportLibrary_DIR}/templates/PackageConfigVersion.cmake.in"
+                  "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}ConfigVersion.cmake"
+                  @ONLY )
 
   set(PACKAGE_VERSION_MAJOR)
   set(PACKAGE_VERSION_MINOR)
   set(PACKAGE_VERSION)
 
-  if( EXPORT_MINOR_VERSION )
-    set(target_dir "${PACKAGE_NAME}-${EXPORT_MAJOR_VERSION}.${EXPORT_MINOR_VERSION}")
+  if( NOT EXPORT_MINOR_VERSION STREQUAL "" )
+    set(target_dir "${PACKAGE_NAME}/${EXPORT_MAJOR_VERSION}.${EXPORT_MINOR_VERSION}")
   elseif( EXPORT_MAJOR_VERSION )
-    set(target_dir "${PACKAGE_NAME}-${EXPORT_MAJOR_VERSION}")
+    set(target_dir "${PACKAGE_NAME}/${EXPORT_MAJOR_VERSION}")
   else()
     set(target_dir "${PACKAGE_NAME}")
   endif()
@@ -85,23 +85,23 @@ function(export_library)
            DESTINATION "${prefix}" )
 
   install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}ConfigVersion.cmake
-                ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake.in
-          DESTINATION "${prefix}lib" )
+                 ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake
+           DESTINATION "${prefix}cmake" )
 
   install( TARGETS "${EXPORT_TARGETS}"
-          EXPORT "${PACKAGE_NAME}Targets"
-          LIBRARY DESTINATION "${prefix}lib"
-          ARCHIVE DESTINATION "${prefix}lib"
-          RUNTIME DESTINATION "${prefix}bin"
-          INCLUDES DESTINATION "${prefix}include" )
+           EXPORT "${PACKAGE_NAME}Targets"
+           LIBRARY DESTINATION "${prefix}lib"
+           ARCHIVE DESTINATION "${prefix}lib"
+           RUNTIME DESTINATION "${prefix}bin"
+           INCLUDES DESTINATION "${prefix}include" )
 
   if( EXPORT_NAMESPACE )
     set(namespace NAMESPACE ${EXPORT_NAMESPACE})
   endif()
 
   install( EXPORT "${PACKAGE_NAME}Targets"
-          ${namespace}
-          DESTINATION "${prefix}lib"
-          FILE "${PACKAGE_NAME}Targets.cmake" )
+           ${namespace}
+           DESTINATION "${prefix}cmake"
+           FILE "${PACKAGE_NAME}Targets.cmake" )
 
 endfunction()
