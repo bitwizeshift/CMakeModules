@@ -51,7 +51,7 @@ function(_Bit_GET_CANDIDATE_VERSIONS result component version)
     set(_Bit_CANDIDATE_VERSIONS ${_Bit_VERSIONS})
   else()
     foreach(_Bit_VERSION ${_Bit_VERSIONS})
-      if("${_Bit_VERSION}" VERSION_GREATER "${version}" OR "${_Bit_VERSION}" STREQUAL "${version}")
+      if("${_Bit_VERSION}" VERSION_GREATER "${version}" OR "${_Bit_VERSION}" VERSION_EQUAL "${version}")
         list(APPEND _Bit_CANDIDATE_VERSIONS ${_Bit_VERSION})
       endif()
     endforeach()
@@ -62,20 +62,23 @@ endfunction()
 
 foreach( _Bit_FIND_COMPONENT ${Bit_FIND_COMPONENTS})
 
-  _Bit_GET_CANDIDATE_VERSIONS(_CANDIDATE_VERSIONS "${_Bit_FIND_COMPONENT}" "${Bit_FIND_VERSION}")
+  _Bit_GET_CANDIDATE_VERSIONS(_CANDIDATE_VERSIONS "${_Bit_FIND_COMPONENT}" "${_Bit_COMPONENT_VERSION}")
 
-  message(
-"find_package( ${_Bit_FIND_COMPONENT} ${_Bit_COMPONENT_VERSION}
+  set(_SUFFIXES)
+  foreach(_CANDIDATE_VERSION ${_CANDIDATE_VERSIONS})
+    list(APPEND _SUFFIXES "${_CANDIDATE_VERSION}/cmake")
+  endforeach()
+
+  set(_COMPONENT_VERSION ${_Bit_COMPONENT_VERSION})
+  if(_CANDIDATE_VERSIONS AND ("${_Bit_COMPONENT_VERSION}" STREQUAL ""))
+    list(GET _CANDIDATE_VERSIONS 0 _version)
+    set(_COMPONENT_VERSION ${_version})
+  endif()
+
+  find_package( ${_Bit_FIND_COMPONENT} ${_COMPONENT_VERSION}
     ${_Bit_EXACT} ${_Bit_QUIET} ${_Bit_REQUIRED}
     PATHS $ENV{BIT_HOME}/${_Bit_FIND_COMPONENT}
-    PATH_SUFFIXES ${_CANDIDATE_VERSIONS}
-)"
-  )
-
-  find_package( ${_Bit_FIND_COMPONENT} ${_Bit_COMPONENT_VERSION}
-    ${_Bit_EXACT} ${_Bit_QUIET} ${_Bit_REQUIRED}
-    PATHS $ENV{BIT_HOME}/${_Bit_FIND_COMPONENT}
-    PATH_SUFFIXES ${_CANDIDATE_VERSIONS}
+    PATH_SUFFIXES ${_SUFFIXES}
   )
 
 endforeach()
