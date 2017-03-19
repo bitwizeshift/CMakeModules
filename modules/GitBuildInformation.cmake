@@ -115,7 +115,7 @@ macro(git_build_information)
 
   if( GIT_BUILD_VARIABLE )
 
-    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count HEAD
+    execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count HEAD -- ${GIT_PATHSPECS}
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_BUILD_VARIABLE}"
                     ERROR_VARIABLE "${_error}"
