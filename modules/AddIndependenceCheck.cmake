@@ -49,7 +49,8 @@ function(add_independence_check target arg1)
 
     endif()
 
-    set_property( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${fullpath}")
+    set_property( DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${output_path}")
+    set_property( DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${output_path}")
 
     list(APPEND source_files "${output_path}")
 
