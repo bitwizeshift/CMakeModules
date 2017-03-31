@@ -46,7 +46,7 @@ macro(enable_clang_tidy)
       endforeach()
 
       set(CMAKE_CLANG_TIDY_ENABLED On CACHE INTERNAL "")
-
+      set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 
       unset(__clang_tidy_LANGUAGES)
       unset(__clang_tidy_ARGS)
