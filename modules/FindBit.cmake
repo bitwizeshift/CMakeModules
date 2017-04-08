@@ -65,7 +65,7 @@ foreach( _Bit_FIND_COMPONENT ${Bit_FIND_COMPONENTS})
   # Ignore components that have already been included, or exist in the current
   # source tree.
   string(TOLOWER "${_BIT_FIND_COMPONENT}" _BIT_FIND_COMPONENT_LOWER)
-  if( TARGET "bit::${_BIT_FIND_COMPONENT_LOWER" )
+  if( TARGET "bit::${_BIT_FIND_COMPONENT_LOWER}" )
     continue()
   endif()
 
