@@ -57,11 +57,11 @@ macro(make_version_header output_path )
     message(FATAL_ERROR "make_version_header: Incorrect minor version. Expected numeric entry, received '${MINOR_VERSION}'")
   endif()
 
-  if( NOT PATCH_VERSION MATCHES "[0-9]+")
+  if( NOT "${PATCH_VERSION}" STREQUAL "" AND NOT PATCH_VERSION MATCHES "[0-9]+")
     message(FATAL_ERROR "make_version_header: Incorrect patch version. Expected numeric entry, received '${PATCH_VERSION}'")
   endif()
 
-  if( NOT BUILD_NUMBER MATCHES "[0-9]+")
+  if( NOT "${BUILD_NUMBER}" STREQUAL "" AND NOT BUILD_NUMBER MATCHES "[0-9]+")
     message(FATAL_ERROR "make_version_header: Incorrect build number. Expected numeric entry, received '${BUILD_NUMBER}'")
   endif()
 
@@ -122,7 +122,7 @@ macro(make_version_header output_path )
 
   set(VERSION_STRING "${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}")
 
-  if( TAG_VERSION )
+  if( NOT "${TAG_VERSION}" STREQUAL "" )
     set(FULL_VERSION_STRING "${VERSION_STRING}${VERSION_SUFFIX} (${TAG_VERSION} ${BUILD_NUMBER})")
   else()
     set(FULL_VERSION_STRING "${VERSION_STRING}${VERSION_SUFFIX}")
