@@ -39,6 +39,12 @@ macro(git_build_information)
     find_program(GIT_EXECUTABLE_PATH git)
   endif()
 
+  execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" --version
+                  OUTPUT_VARIABLE GIT_VERSION
+                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+  message(STATUS "Git version identified as: ${GIT_VERSION}")
+
   if( NOT GIT_EXECUTABLE_PATH )
     if( GIT_PATCH_VARIABLE STREQUAL "" )
       set("${GIT_PATCH_VARIABLE}" "${GIT_PATCH_VARIABLE}-NOTFOUND")
@@ -60,12 +66,13 @@ macro(git_build_information)
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count ${GIT_REF}..HEAD -- ${GIT_PATHSPECS}
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_PATCH_VARIABLE}"
-                    ERROR_VARIABLE "${_error}"
+                    ERROR_VARIABLE "_error"
+                    RESULT_VARIABLE "_result"
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     ERROR_STRIP_TRAILING_WHITESPACE )
 
-    if( _error )
-      message(FATAL_ERROR "git_build_information: Error retrieving patch revision. ${_error}")
+    if( NOT _result EQUAL 0 )
+      message(FATAL_ERROR "git_build_information: Error retrieving patch revision:\n ${_error}")
     endif()
 
   endif()
@@ -77,12 +84,13 @@ macro(git_build_information)
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-list --count HEAD -- ${GIT_PATHSPECS}
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_BUILD_VARIABLE}"
-                    ERROR_VARIABLE "${_error}"
+                    ERROR_VARIABLE "_error"
+                    RESULT_VARIABLE "_result"
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     ERROR_STRIP_TRAILING_WHITESPACE )
 
-    if( _error )
-      message(FATAL_ERROR "git_build_information: Error retrieving build number. ${_error}")
+    if( NOT _result EQUAL 0 )
+      message(FATAL_ERROR "git_build_information: Error retrieving build number:\n ${_error}")
     endif()
 
   endif()
@@ -94,12 +102,13 @@ macro(git_build_information)
     execute_process(COMMAND "${GIT_EXECUTABLE_PATH}" rev-parse --abbrev-ref HEAD
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                     OUTPUT_VARIABLE "${GIT_BRANCH_VARIABLE}"
-                    ERROR_VARIABLE "${_error}"
+                    ERROR_VARIABLE "_error"
+                    RESULT_VARIABLE "_result"
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     ERROR_STRIP_TRAILING_WHITESPACE )
 
-    if( _error )
-      message(FATAL_ERROR "git_build_information: Error retrieving build number. ${_error}")
+    if( NOT _result EQUAL 0 )
+      message(FATAL_ERROR "git_build_information: Error retrieving branch name. ${_error}")
     endif()
 
   endif()
