@@ -28,47 +28,51 @@ endif()
 
 # Set up iwyu support (for cmake >= 3.3)
 macro(enable_iwyu)
-  if(CMAKE_VERSION VERSION_GREATER 3.2)
-    if( IWYU_PATH )
-      message(STATUS "Enabling include-what-you-use")
-
-      cmake_parse_arguments("__iwyu" "" "" "LANGUAGES;ARGS" ${ARGN})
-      if( NOT __iwyu_LANGUAGES )
-        set(__iwyu_LANGUAGES CXX) # default to C++ support
-      endif()
-
-      foreach(lang ${__iwyu_LANGUAGES})
-        set(CMAKE_${lang}_INCLUDE_WHAT_YOU_USE "${IWYU_PATH};${__iwyu_ARGS}")
-      endforeach()
-
-      set(CMAKE_INCLUDE_WHAT_YOU_USE_ENABLED On CACHE INTERNAL "")
-
-      unset(__iwyu_LANGUAGES)
-      unset(__iwyu_ARGS)
-
-      message(STATUS "Enabling include-what-you-use - done")
-    endif()
+  if( NOT CMAKE_VERSION VERSION_GREATER 3.2 )
+    return()
   endif()
+  if( NOT IWYU_PATH )
+    return()
+  endif()
+
+  message(STATUS "Enabling include-what-you-use")
+
+  cmake_parse_arguments("__iwyu" "" "" "LANGUAGES;ARGS" ${ARGN})
+  if( NOT __iwyu_LANGUAGES )
+    set(__iwyu_LANGUAGES CXX) # default to C++ support
+  endif()
+
+  foreach(lang ${__iwyu_LANGUAGES})
+    set(CMAKE_${lang}_INCLUDE_WHAT_YOU_USE "${IWYU_PATH};${__iwyu_ARGS}")
+  endforeach()
+
+  set(CMAKE_INCLUDE_WHAT_YOU_USE_ENABLED On CACHE INTERNAL "")
+
+  unset(__iwyu_LANGUAGES)
+  unset(__iwyu_ARGS)
+
+  message(STATUS "Enabling include-what-you-use - done")
 endmacro()
 
 macro(target_enable_iwyu target)
-  if(CMAKE_VERSION VERSION_GREATER 3.3)
-
-    if( IWYU_PATH )
-      cmake_parse_arguments("__iwyu" "" "" "LANGUAGES;ARGS" ${ARGN})
-
-      if( NOT __iwyu_LANGUAGES )
-        set(__iwyu_LANGUAGES CXX) # default to C++ support
-      endif()
-
-      foreach(lang ${__iwyu_LANGUAGES})
-        set_target_properties(${target} PROPERTY ${lang}_INCLUDE_WHAT_YOU_USE "${IWYU_PATH};${__iwyu_ARGS}")
-      endforeach()
-
-      unset(__iwyu_LANGUAGES)
-      unset(__iwyu_ARGS)
-
-    endif()
+  if( NOT CMAKE_VERSION VERSION_GREATER 3.3 )
+    return()
   endif()
+  if( NOT IWYU_PATH )
+    return()
+  endif()
+
+  cmake_parse_arguments("__iwyu" "" "" "LANGUAGES;ARGS" ${ARGN})
+
+  if( NOT __iwyu_LANGUAGES )
+    set(__iwyu_LANGUAGES CXX) # default to C++ support
+  endif()
+
+  foreach(lang ${__iwyu_LANGUAGES})
+    set_target_properties(${target} PROPERTY ${lang}_INCLUDE_WHAT_YOU_USE "${IWYU_PATH};${__iwyu_ARGS}")
+  endforeach()
+
+  unset(__iwyu_LANGUAGES)
+  unset(__iwyu_ARGS)
 endmacro()
 
