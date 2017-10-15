@@ -43,4 +43,6 @@ macro(copy_target_properties to_target from_target)
 
   endforeach()
 
+  unset(COPY_PROPERTIES)
+
 endmacro()

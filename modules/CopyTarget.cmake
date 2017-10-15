@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6.3)
 include("${CMAKE_CURRENT_LIST_DIR}/CopyTargetProperties.cmake")
 
 #.rst:
-# CopyTargetProperties
+# CopyTarget
 # ---------
 #
 # Copies a list of properties from a given target to another target
