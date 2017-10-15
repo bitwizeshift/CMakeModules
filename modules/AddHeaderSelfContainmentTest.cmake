@@ -33,7 +33,7 @@ function(add_header_self_containment_test target arg0)
     set(extension "cpp")
   endif()
 
-  set(output_dir "${CMAKE_CURRENT_BINARY_DIR}/${target}.self_containment_test/src")
+  set(output_dir "${CMAKE_CURRENT_BINARY_DIR}/self_containment_test")
 
   ############################### Create files ###############################
 
